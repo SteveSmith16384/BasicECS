@@ -8,7 +8,7 @@ public abstract class AbstractEntity {
 
 	public int id;
 	public String name;
-	private HashMap<Class, Object> components = new HashMap<Class, Object>();
+	private HashMap<Class<?>, Object> components = new HashMap<Class<?>, Object>();
 	private boolean markForRemoval = false;
 
 	public AbstractEntity(String _name) {
@@ -27,7 +27,7 @@ public abstract class AbstractEntity {
 	}
 
 
-	public Object getComponent(Class name) {
+	public Object getComponent(Class<?> name) {
 		if (this.components.containsKey(name)) {
 			return this.components.get(name);
 		} else {
@@ -36,7 +36,7 @@ public abstract class AbstractEntity {
 	}
 
 
-	public HashMap<Class, Object> getComponents() {
+	public HashMap<Class<?>, Object> getComponents() {
 		return this.components;
 	}
 

@@ -21,7 +21,7 @@ public class BasicECS {
 
 
 
-	public AbstractSystem getSystem(Class clazz) {
+	public AbstractSystem getSystem(Class<?> clazz) {
 		return this.systems.get(clazz);
 	}
 
@@ -49,7 +49,6 @@ public class BasicECS {
 					Class<?> clazz = system.getComponentClass();
 					if (clazz != null) {
 						if (entity.getComponents().containsKey(clazz)) {
-							//MyGdxGame.p("Removing " + entity + " from " + system + " system");
 							system.entities.remove(entity);
 						}
 					}
@@ -59,7 +58,7 @@ public class BasicECS {
 
 		for(AbstractEntity e : this.to_add_entities) {
 			for(AbstractSystem system : this.systems.values()) {
-				Class clazz = system.getComponentClass();
+				Class<?> clazz = system.getComponentClass();
 				if (clazz != null) {
 					if (e.getComponents().containsKey(clazz)) {
 						system.entities.add(e);
