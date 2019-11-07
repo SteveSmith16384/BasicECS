@@ -37,6 +37,9 @@ public class BasicECS {
 	}
 	
 	
+	/*
+	 * Entities are added here to avoid ConcurrentModificationExceptions when add/removing entities while iterating through the list of entities. 
+	 */
 	public void addAndRemoveEntities() {
 		// Remove any entities
 		for (int i = this.entities.size()-1 ; i >= 0; i--) {
