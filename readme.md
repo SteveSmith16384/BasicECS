@@ -7,3 +7,5 @@ See the example classes.
 ## Support
 Feel free to email me at stephen.carlylesmith@googlemail.com with any questions or issues.
 
+## Licence
+BasicECS has an MIT licence.
