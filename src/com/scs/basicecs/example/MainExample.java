@@ -16,7 +16,7 @@ public class MainExample {
 		ecs.addSystem(new ExampleSystem(ecs));
 		
 		while (true) {
-			ecs.addEntity(new ExampleEntity());
+			ecs.addEntity(new ExampleEntity(ecs));
 			
 			ecs.addAndRemoveEntities();
 			

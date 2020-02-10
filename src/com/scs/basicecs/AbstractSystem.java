@@ -4,13 +4,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public abstract class AbstractSystem {
+public abstract class AbstractSystem implements ISystem {
 
 	protected BasicECS ecs;
 	protected List<AbstractEntity> entities;
+	private String name;
 
 	public AbstractSystem(BasicECS _ecs) {
 		this.ecs = _ecs;
+		
+		name = this.getClass().getSimpleName();
 
 		this.ecs.addSystem(this);
 
@@ -22,6 +25,8 @@ public abstract class AbstractSystem {
 
 	/**
 	 * Override if this system should only deal with entities that have a specific component.
+	 * Note to future self: Do NOT change this to handle multiple component types.  If that is
+	 * needed, create a separate system!
 	 */
 	public Class<?> getComponentClass() {
 		return null;
@@ -39,12 +44,18 @@ public abstract class AbstractSystem {
 			Iterator<AbstractEntity> it = ecs.getIterator();
 			while (it.hasNext()) {
 				AbstractEntity entity = it.next();
+				if (entity.isMarkedForRemoval()) {
+					continue;
+				}
 				this.processEntity(entity);
 			}
 		} else {
 			Iterator<AbstractEntity> it = entities.iterator();
 			while (it.hasNext()) {
 				AbstractEntity entity = it.next();
+				if (entity.isMarkedForRemoval()) {
+					continue;
+				}
 				this.processEntity(entity);
 			}
 		}
@@ -55,4 +66,9 @@ public abstract class AbstractSystem {
 	public void processEntity(AbstractEntity entity) {
 	}
 
+	
+	public String toString() {
+		return name; //super.toString();
+	}
+	
 }
