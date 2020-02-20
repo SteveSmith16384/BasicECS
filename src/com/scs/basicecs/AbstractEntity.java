@@ -23,7 +23,9 @@ public class AbstractEntity {
 
 	public void addComponent(Object component) {
 		this.components.put(component.getClass(), component);
-		ecs.addEntityToSystems(this, component.getClass());
+		if (this.ecs.containsEntity(this)) { // Don't add to system if entity hasn't been added to main list yet
+			ecs.addEntityToSystems(this, component.getClass());
+		}
 	}
 
 
@@ -42,8 +44,10 @@ public class AbstractEntity {
 
 	public void restoreComponent(Class<?> clazz) {
 		Object component = this.hiddenComponents.remove(clazz);
-		this.components.put(clazz, component);
-		ecs.addEntityToSystems(this, clazz);
+		if (component != null) { // Just in case the component doesn't exist
+			this.components.put(clazz, component);
+			ecs.addEntityToSystems(this, clazz);
+		}
 	}
 
 
