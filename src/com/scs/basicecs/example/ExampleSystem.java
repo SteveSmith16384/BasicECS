@@ -26,7 +26,7 @@ public class ExampleSystem extends AbstractSystem {
 	public void processEntity(AbstractEntity entity) {
 		ExampleComponent component = (ExampleComponent)entity.getComponent(ExampleComponent.class);
 		component.myNumber++;
-		System.out.println("Entity id #" + entity.id + " now has a value of " + component.myNumber);
+		System.out.println("Entity id #" + entity.entityId + " now has a value of " + component.myNumber);
 		
 		if (component.myNumber > 10) {
 			entity.remove();

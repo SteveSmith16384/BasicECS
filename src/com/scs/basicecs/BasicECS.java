@@ -10,7 +10,8 @@ public class BasicECS {
 	private HashMap<Class<?>, ISystem> systems = new HashMap<Class<?>, ISystem>();
 	private List<AbstractEntity> entities = new ArrayList<AbstractEntity>();
 	private List<AbstractEntity> to_add_entities = new ArrayList<AbstractEntity>();
-
+	public List<AbstractEvent> events = new ArrayList<AbstractEvent>(); // todo - make private, add an add()
+	
 	public BasicECS() {
 	}
 
@@ -49,11 +50,7 @@ public class BasicECS {
 				Class<?> system_clazz = system.getComponentClass();
 				if (system_clazz != null) {
 					if (component_class.equals(system_clazz)) {
-						if (system.entities.contains(e) == false) {
-							system.entities.add(e);
-						} else {
-							throw new RuntimeException("Entity " + e + " already exists in " + system);
-						}
+						system.addEntity(e);
 					}
 				}
 			}
@@ -112,16 +109,12 @@ public class BasicECS {
 					Class<?> clazz = system.getComponentClass();
 					if (clazz != null) {
 						if (e.getComponents().containsKey(clazz)) {
-							if (system.entities.contains(e) == false) {
-								system.entities.add(e);
-							} else {
-								// Entity might already exist since we add components to systems immediately
-							}
+							system.addEntity(e);
 						}
 					}
 				}
 			}
-			this.entities.add(e);			
+			this.entities.add(e);
 		}
 
 		to_add_entities.clear();
@@ -129,6 +122,7 @@ public class BasicECS {
 
 
 	public void addEntity(AbstractEntity e) {
+		e.unmarkForRemoval(); // In case it's been re-added after being removed
 		this.to_add_entities.add(e);
 	}
 
@@ -136,6 +130,7 @@ public class BasicECS {
 	public void removeEntity(AbstractEntity e) {
 		e.remove();
 	}
+	
 
 	public AbstractEntity get(int i) {
 		return this.entities.get(i);
@@ -144,6 +139,34 @@ public class BasicECS {
 
 	public Iterator<AbstractEntity> getEntityIterator() {
 		return this.entities.iterator();
+	}
+
+	
+	public List<AbstractEvent> getEvents(Class<? extends AbstractEvent> clazz) {
+		List<AbstractEvent> list = new ArrayList<AbstractEvent>();
+		Iterator<AbstractEvent> it = this.events.iterator();
+		while (it.hasNext()) {
+			AbstractEvent evt = it.next();
+			if (evt.getClass().equals(clazz)) {
+				list.add(evt);
+			}
+		}
+		return list;
+	}
+
+	
+	public List<AbstractEvent> getEventsForEntity(Class<? extends AbstractEvent> clazz, AbstractEntity e) {
+		List<AbstractEvent> list = new ArrayList<AbstractEvent>();
+		Iterator<AbstractEvent> it = this.events.iterator();
+		while (it.hasNext()) {
+			AbstractEvent evt = it.next();
+			if (evt.getClass().equals(clazz)) {
+				if (evt.isForEntity(e)) {
+					list.add(evt);
+				}
+			}
+		}
+		return list;
 	}
 
 	
