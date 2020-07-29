@@ -35,9 +35,6 @@ www-test/
 com_crashlytics_export_strings.xml
 
 ## Eclipse
-
-.classpath
-.project
 .metadata/
 /android/bin/
 /core/bin/
