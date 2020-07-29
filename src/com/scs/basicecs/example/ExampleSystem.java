@@ -12,15 +12,9 @@ import com.scs.basicecs.BasicECS;
 public class ExampleSystem extends AbstractSystem {
 
 	public ExampleSystem(BasicECS ecs) {
-		super(ecs);
+		super(ecs, ExampleComponent.class);
 	}
 
-
-	@Override
-	public Class<?> getComponentClass() {
-		return ExampleComponent.class; // Only handle entities that have an ExampleComponent component.
-	}
-	
 
 	@Override
 	public void processEntity(AbstractEntity entity) {

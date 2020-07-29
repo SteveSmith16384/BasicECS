@@ -9,12 +9,9 @@ public abstract class AbstractSystem implements ISystem {
 	protected BasicECS ecs;
 	protected List<AbstractEntity> entities;
 	private String name;
-	protected Class<?> component_class;
+	private Class<?> component_class;
 
-	public AbstractSystem(BasicECS _ecs) {
-		this(_ecs, null);
-	}
-	
+	public long total_time;
 	
 	/**
 	 * 
@@ -31,6 +28,8 @@ public abstract class AbstractSystem implements ISystem {
 
 		if (this.getComponentClass() != null) {
 			entities = new ArrayList<AbstractEntity>();
+		} else {
+			throw new RuntimeException("This should not happen!");
 		}
 	}
 
@@ -39,7 +38,7 @@ public abstract class AbstractSystem implements ISystem {
 	 * Note to future self: Do NOT change this to handle multiple component types.  If that is
 	 * needed, create a separate system!
 	 */
-	public Class<?> getComponentClass() { // todo - make final when sure it works
+	public final Class<?> getComponentClass() {
 		return component_class;
 	}
 
@@ -59,30 +58,46 @@ public abstract class AbstractSystem implements ISystem {
 	}
 
 
+	public void removeEntity(AbstractEntity e) {
+		this.entities.remove(e);
+	}
+	
+	
 	public void process() {
+		long start = System.currentTimeMillis();
+		
 		if (this.entities == null) {
 			Iterator<AbstractEntity> it = ecs.getEntityIterator();
 			while (it.hasNext()) {
 				AbstractEntity entity = it.next();
-				if (entity.isMarkedForRemoval()) {
+				/*if (entity.isMarkedForRemoval()) {
 					continue;
-				}
+				}*/
 				this.processEntity(entity);
 			}
 		} else {
 			Iterator<AbstractEntity> it = entities.iterator();
 			while (it.hasNext()) {
 				AbstractEntity entity = it.next();
-				if (entity.isMarkedForRemoval()) {
+				/*if (entity.isMarkedForRemoval()) {
 					continue;
-				}
+				}*/
 				this.processEntity(entity);
 			}
 		}
+		
+		long duration = System.currentTimeMillis() - start;
+		this.total_time += duration;
 	}
 
 
 	public void processEntity(AbstractEntity entity) {
+		// Override if you want to process all entities with required component.
+	}
+
+	
+	public Iterator<AbstractEntity> getEntityIterator() {
+		return this.entities.iterator();
 	}
 
 	
