@@ -1,5 +1,5 @@
 # BasicECS
-A very simple but fully functional Entity Component System (ECS) in Java.
+A simple but very fully functional Entity Component System (ECS) in Java.
 
 
 ## What is an Entity Component System?
@@ -17,7 +17,10 @@ Designing a game now becomes a task of defining your systems based on what your 
 
 
 ## Software that Uses This
-I use this for all my latest gamedev projects.  The highlight (at the time of writing this) is Overblow, a split-screen FPS: https://github.com/SteveSmith16384/OverblownGame
+I use this for all my latest gamedev projects.  The highlights (at the time of writing this) are:-
+
+* Overblown, a split-screen FPS: https://github.com/SteveSmith16384/OverblownGame
+* A simple 2D platformer https://github.com/SteveSmith16384/SimplePlatformer
 
 
 ## Credits
